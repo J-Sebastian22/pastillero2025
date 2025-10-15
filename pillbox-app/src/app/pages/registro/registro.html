@@ -1,0 +1,17 @@
+<div class="container mt-5" style="max-width: 400px;">
+  <h3 class="text-center mb-3">Registro</h3>
+
+  <div *ngIf="mensaje" class="alert alert-success">{{ mensaje }}</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <input class="form-control mb-2" [(ngModel)]="nuevoUsuario.nombre" placeholder="Nombre completo">
+  <input class="form-control mb-2" [(ngModel)]="nuevoUsuario.correo" placeholder="Correo" type="email">
+  <input class="form-control mb-2" [(ngModel)]="nuevoUsuario.telefono" placeholder="Teléfono">
+  <input class="form-control mb-3" [(ngModel)]="nuevoUsuario.password" placeholder="Contraseña" type="password">
+
+  <button class="btn btn-success w-100" (click)="registrar()">Registrar</button>
+
+  <div class="text-center mt-3">
+    <a routerLink="/login">Ya tengo una cuenta</a>
+  </div>
+</div>

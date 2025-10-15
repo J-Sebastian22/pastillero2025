@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <h2>Medicamentos</h2>
+  <div class="mb-3">
+    <input type="text" [(ngModel)]="nuevoMedicamento.nombre" placeholder="Nombre" class="form-control mb-2">
+    <input type="text" [(ngModel)]="nuevoMedicamento.dosis" placeholder="Dosis" class="form-control mb-2">
+    <textarea [(ngModel)]="nuevoMedicamento.descripcion" placeholder="Descripción" class="form-control mb-2"></textarea>
+    <button class="btn btn-primary" (click)="agregarMedicamento()">Agregar</button>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr><th>Nombre</th><th>Dosis</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let med of medicamentos">
+        <td>{{ med.nombre }}</td>
+        <td>{{ med.dosis }}</td>
+        <td><button class="btn btn-danger btn-sm" (click)="eliminarMedicamento(med.id)">Eliminar</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

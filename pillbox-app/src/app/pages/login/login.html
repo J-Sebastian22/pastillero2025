@@ -1,0 +1,14 @@
+<div class="container mt-5" style="max-width: 400px;">
+  <h3 class="text-center mb-3">Iniciar Sesión</h3>
+
+  <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+  <input class="form-control mb-2" [(ngModel)]="usuario.correo" placeholder="Correo" type="email">
+  <input class="form-control mb-3" [(ngModel)]="usuario.password" placeholder="Contraseña" type="password">
+
+  <button class="btn btn-primary w-100" (click)="login()">Ingresar</button>
+
+  <div class="text-center mt-3">
+    <a routerLink="/registro">Crear cuenta</a>
+  </div>
+</div>

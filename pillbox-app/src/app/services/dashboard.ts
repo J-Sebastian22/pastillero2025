@@ -3,23 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class Horario {
-  private apiUrl = `${environment.apiUrl}horarios/`;
+export class Dashboards {
+  private apiUrl = `${environment.apiUrl}proximos-horarios/`;
 
   constructor(private http: HttpClient) {}
 
-  getByUsuario(id_usuario: number): Observable<any> {
+  getProximosHorarios(id_usuario: number): Observable<any> {
     return this.http.get(`${this.apiUrl}?id_usuario=${id_usuario}`);
-  }
-
-  create(data: any): Observable<any> {
-    return this.http.post(this.apiUrl, data);
-  }
-
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}${id}/`);
   }
 }

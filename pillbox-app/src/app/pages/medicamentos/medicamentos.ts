@@ -12,30 +12,30 @@ import { Auth } from '../../services/auth';
   styleUrls: ['./medicamentos.css']
 })
 export class Medicamentos implements OnInit {
+
   medicamentos: any[] = [];
   nuevoMedicamento = { nombre: '', descripcion: '', dosis: '', id_usuario: null };
 
   constructor(private medicamentoService: Medicamento, private auth: Auth) {}
 
   ngOnInit() {
-    const usuario = this.auth.obtenerUsuario();
-    if (usuario) {
-      this.nuevoMedicamento.id_usuario = usuario.id;
-    }
     this.cargarMedicamentos();
   }
 
   cargarMedicamentos() {
-    this.medicamentoService.getAll().subscribe({
-      next: (data) => (this.medicamentos = data),
+    const usuario = this.auth.obtenerUsuario();
+    if (!usuario) return;
+
+    this.medicamentoService.getByUsuario(usuario.id).subscribe({
+      next: (data) => this.medicamentos = data,
       error: (err) => console.error(err)
     });
   }
 
   agregarMedicamento() {
-    if (!this.nuevoMedicamento.nombre) return;
-
     const usuario = this.auth.obtenerUsuario();
+    if (!usuario || !this.nuevoMedicamento.nombre) return;
+
     this.nuevoMedicamento.id_usuario = usuario.id;
 
     this.medicamentoService.create(this.nuevoMedicamento).subscribe({
@@ -48,6 +48,9 @@ export class Medicamentos implements OnInit {
   }
 
   eliminarMedicamento(id: number) {
-    this.medicamentoService.delete(id).subscribe(() => this.cargarMedicamentos());
+    this.medicamentoService.delete(id).subscribe({
+      next: () => this.cargarMedicamentos(),
+      error: (err) => console.error(err)
+    });
   }
 }

@@ -9,6 +9,10 @@ export class Medicamento {
 
   constructor(private http: HttpClient) {}
 
+  getByUsuario(id_usuario: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}?id_usuario=${id_usuario}`);
+  }
+
   getAll(): Observable<any> {
     return this.http.get(this.apiUrl);
   }

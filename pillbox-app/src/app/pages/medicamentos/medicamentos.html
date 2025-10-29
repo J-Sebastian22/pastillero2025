@@ -1,21 +1,43 @@
 <div class="container mt-4">
-  <h2>Medicamentos</h2>
-  <div class="mb-3">
-    <input type="text" [(ngModel)]="nuevoMedicamento.nombre" placeholder="Nombre" class="form-control mb-2">
-    <input type="text" [(ngModel)]="nuevoMedicamento.dosis" placeholder="Dosis" class="form-control mb-2">
-    <textarea [(ngModel)]="nuevoMedicamento.descripcion" placeholder="Descripción" class="form-control mb-2"></textarea>
-    <button class="btn btn-primary" (click)="agregarMedicamento()">Agregar</button>
+  <h2 class="mb-3 text-center">Mis Medicamentos</h2>
+
+  <div class="card p-3 shadow-sm mb-4">
+    <h5>Agregar medicamento</h5>
+
+    <div class="row g-2">
+      <div class="col-md-4">
+        <input type="text" class="form-control" [(ngModel)]="nuevoMedicamento.nombre" placeholder="Nombre del medicamento">
+      </div>
+      <div class="col-md-4">
+        <input type="number" class="form-control" [(ngModel)]="nuevoMedicamento.dosis" placeholder="Dosis (Ej: 3)">
+      </div>
+      <div class="col-md-4">
+        <input type="text" class="form-control" [(ngModel)]="nuevoMedicamento.descripcion" placeholder="Descripción (opcional)">
+      </div>
+    </div>
+
+    <div class="text-end mt-3">
+      <button class="btn btn-primary" (click)="agregarMedicamento()">Agregar</button>
+    </div>
   </div>
 
-  <table class="table table-striped">
-    <thead>
-      <tr><th>Nombre</th><th>Dosis</th><th>Acciones</th></tr>
+  <table class="table table-striped table-hover shadow-sm">
+    <thead class="table-primary">
+      <tr>
+        <th>Nombre</th>
+        <th>Dosis</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
     </thead>
     <tbody>
       <tr *ngFor="let med of medicamentos">
         <td>{{ med.nombre }}</td>
         <td>{{ med.dosis }}</td>
-        <td><button class="btn btn-danger btn-sm" (click)="eliminarMedicamento(med.id)">Eliminar</button></td>
+        <td>{{ med.descripcion || '-' }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="eliminarMedicamento(med.id)">Eliminar</button>
+        </td>
       </tr>
     </tbody>
   </table>

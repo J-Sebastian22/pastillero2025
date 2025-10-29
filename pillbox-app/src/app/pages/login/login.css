@@ -1,0 +1,124 @@
+:root {
+  --color-primary: #C43670;
+  --color-accent: #F283AF;
+  --color-secondary-bg: #FBD9E5;
+  --color-main-bg: #FBF4EB;
+  --color-light-blue: #CCE5FF;
+  --color-text-dark: #333333;
+}
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-light-blue);
+  color: var(--color-text-dark);
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.login-box {
+  width: 90%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  background-color: rgba(251, 217, 229, 0.85);
+  backdrop-filter: blur(12px);
+  border-top: 8px solid var(--color-accent);
+  text-align: center;
+}
+
+.logo-img-form {
+  height: 120px;
+  width: auto;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+input {
+  width: 90%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.alert{
+    color: red;
+    margin-bottom: 1.5rem;
+}
+
+.btn-login {
+  background-color: --color-secondary-bg;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-login:hover {
+  background-color: --color-main-bg;
+  transform: scale(1.02);
+}
+
+.register {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.register a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register a:hover {
+  text-decoration: underline;
+}

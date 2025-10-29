@@ -1,0 +1,19 @@
+<!-- Botón de menú -->
+<button class="btn-menu" (click)="toggleSidebar()">☰</button>
+
+<!-- Sidebar -->
+<div class="sidebar" [class.abierto]="sidebarAbierto">
+  <h4 class="text-center mt-3">Menú</h4>
+  <ul class="menu-list">
+    <li routerLink="/dashboard" routerLinkActive="activo" (click)="toggleSidebar()">🏠 Dashboard</li>
+    <li routerLink="/medicamentos" routerLinkActive="activo" (click)="toggleSidebar()">💊 Medicamentos</li>
+    <li routerLink="/horarios" routerLinkActive="activo" (click)="toggleSidebar()">⏰ Horarios</li>
+    <li routerLink="/dispositivo" routerLinkActive="activo" (click)="toggleSidebar()">🔌 Dispositivo</li>
+    <li routerLink="/login" (click)="toggleSidebar()">🚪 Cerrar sesión</li>
+  </ul>
+</div>
+
+<!-- Contenido dinámico -->
+<div class="contenido" [class.con-sidebar]="sidebarAbierto">
+  <router-outlet></router-outlet>
+</div>

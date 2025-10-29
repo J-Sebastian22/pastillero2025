@@ -1,4 +1,5 @@
 <div class="container mt-5" style="max-width: 400px;">
+
   <h3 class="text-center mb-3">Registro</h3>
 
   <div *ngIf="mensaje" class="alert alert-success">{{ mensaje }}</div>
@@ -12,6 +13,6 @@
   <button class="btn btn-success w-100" (click)="registrar()">Registrar</button>
 
   <div class="text-center mt-3">
-    <a routerLink="/login">Ya tengo una cuenta</a>
+    <a href="/login">Ya tengo una cuenta</a>
   </div>
 </div>

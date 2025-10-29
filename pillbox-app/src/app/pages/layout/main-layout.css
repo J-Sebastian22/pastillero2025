@@ -1,0 +1,58 @@
+.btn-menu {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 24px;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #343a40;
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  padding-top: 60px;
+}
+
+.sidebar.abierto {
+  left: 0;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-list li {
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.menu-list li:hover {
+  background-color: #495057;
+}
+
+.menu-list li.activo {
+  background-color: #007bff;
+}
+
+.contenido {
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
+}
+
+.contenido.con-sidebar {
+  margin-left: 250px;
+}

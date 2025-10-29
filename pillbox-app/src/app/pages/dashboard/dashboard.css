@@ -1,0 +1,19 @@
+
+/* Contenido principal */
+.contenido {
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
+}
+
+.contenido.con-sidebar {
+  margin-left: 250px;
+}
+
+/* Ajustes visuales */
+.container {
+  max-width: 900px;
+}
+
+.card {
+  border-radius: 10px;
+}

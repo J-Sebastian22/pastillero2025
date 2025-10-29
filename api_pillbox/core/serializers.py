@@ -26,6 +26,7 @@ class MedicamentoSerializer(serializers.ModelSerializer):
 
 
 class HorarioSerializer(serializers.ModelSerializer):
+    medicamento_nombre = serializers.CharField(source='id_medicamento.nombre', read_only=True)
     class Meta:
         model = Horario
         fields = '__all__'

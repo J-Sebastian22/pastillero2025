@@ -17,4 +17,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/registro/', registrar_usuario),
     path('api/login/', login_usuario),
+     path('api/proximos-horarios/', proximos_horarios),
 ]

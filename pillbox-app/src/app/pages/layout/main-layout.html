@@ -1,19 +1,33 @@
-<!-- Botón de menú -->
 <button class="btn-menu" (click)="toggleSidebar()">☰</button>
-
-<!-- Sidebar -->
 <div class="sidebar" [class.abierto]="sidebarAbierto">
-  <h4 class="text-center mt-3">Menú</h4>
-  <ul class="menu-list">
-    <li routerLink="/dashboard" routerLinkActive="activo" (click)="toggleSidebar()">🏠 Dashboard</li>
-    <li routerLink="/medicamentos" routerLinkActive="activo" (click)="toggleSidebar()">💊 Medicamentos</li>
-    <li routerLink="/horarios" routerLinkActive="activo" (click)="toggleSidebar()">⏰ Horarios</li>
-    <li routerLink="/dispositivo" routerLinkActive="activo" (click)="toggleSidebar()">🔌 Dispositivo</li>
-    <li routerLink="/login" (click)="toggleSidebar()">🚪 Cerrar sesión</li>
-  </ul>
-</div>
+  <div class="logo">
+    <span class="emoji">💊</span>
+  </div>
 
-<!-- Contenido dinámico -->
+  <nav>
+    <ul class="menu-options">
+      <li routerLink="/dashboard" routerLinkActive="selected" (click)="toggleSidebar()">
+        <span class="emoji">🏠</span>
+      </li>
+      <li routerLink="/medicamentos" routerLinkActive="selected" (click)="toggleSidebar()">
+        <span class="emoji">💊</span>
+      </li>
+      <li routerLink="/horarios" routerLinkActive="selected" (click)="toggleSidebar()">
+        <span class="emoji">⏰</span>
+      </li>
+      <li routerLink="/dispositivo" routerLinkActive="selected" (click)="toggleSidebar()">
+        <span class="emoji">🔌</span>
+      </li>
+      <li routerLink="/login" (click)="toggleSidebar()">
+        <span class="emoji">🚪</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="more-options">
+    <span class="emoji">⋯</span>
+  </div>
+</div>
 <div class="contenido" [class.con-sidebar]="sidebarAbierto">
   <router-outlet></router-outlet>
 </div>

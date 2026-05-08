@@ -1,22 +1,49 @@
 <div class="contenido" [class.con-sidebar]="sidebarAbierto">
   <div class="container mt-4">
-    <h2 class="text-center mb-3">Bienvenido, {{ usuario?.nombre }}</h2>
+    <h2 class="text-center mb-1">Bienvenido, {{ usuario?.nombre }}</h2>
+    <p class="subtitle text-center mb-3">Aquí tienes tu resumen de medicación para hoy.</p>
+
+    <div class="summary-grid mb-4">
+      <div class="summary-card">
+        <div class="card-icon pill"><span class="material-icons">medical_services</span></div>
+        <div class="card-content">
+          <div class="card-title">Medicamentos Activos</div>
+          <div class="card-value">{{ numMedicamentosActivos }}</div>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon alert"><span class="material-icons">schedule</span></div>
+        <div class="card-content">
+          <div class="card-title">Alertas Hoy</div>
+          <div class="card-value">{{ alertasHoy }}</div>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon device"><span class="material-icons">power</span></div>
+        <div class="card-content">
+          <div class="card-title">Estado Pastillero</div>
+          <div class="card-value status-connected">{{ estadoPastillero }}</div>
+        </div>
+      </div>
+    </div>
 
     <div class="card shadow-sm p-3 mb-4">
-      <h5 class="mb-3">⏰ Próximos horarios de medicación</h5>
+      <h5 class="mb-3"><span class="material-icons">schedule</span> Próximos horarios de medicación</h5>
       <table class="table table-hover table-sm">
         <thead>
           <tr>
             <th>Medicamento</th>
-            <th>Hora</th>
+            <th>Próxima toma</th>
             <th>Frecuencia</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let h of proximosHorarios">
-            <td>{{ h.medicamento }}</td>
-            <td>{{ h.hora_toma }}</td>
-            <td>{{ h.frecuencia }}</td>
+            <td>{{ h.medicamento || h.medicamento_nombre }}</td>
+            <td>{{ h.proxima_toma | date:'short' }}</td>
+            <td><span class="badge">{{ h.frecuencia ? (h.frecuencia + ' h') : '-' }}</span></td>
           </tr>
         </tbody>
       </table>

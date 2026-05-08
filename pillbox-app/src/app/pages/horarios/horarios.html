@@ -14,7 +14,7 @@
         <input type="time" class="form-control" [(ngModel)]="nuevoHorario.hora_toma">
       </div>
       <div class="col-md-4">
-        <input type="text" class="form-control" [(ngModel)]="nuevoHorario.frecuencia" placeholder="Ej: Cada 8 horas">
+        <input type="number" class="form-control" [(ngModel)]="nuevoHorario.frecuencia" placeholder="Frecuencia (horas)" min="1" step="1">
       </div>
       <div class="col-md-1 text-end">
         <button class="btn btn-primary" (click)="agregarHorario()">+</button>
@@ -35,7 +35,7 @@
       <tr *ngFor="let h of horarios">
         <td>{{ h.medicamento_nombre }}</td>
         <td>{{ h.hora_toma }}</td>
-        <td>{{ h.frecuencia }}</td>
+        <td>{{ h.frecuencia ? (h.frecuencia + ' h') : '-' }}</td>
         <td>
           <button class="btn btn-danger btn-sm" (click)="eliminarHorario(h.id)">Eliminar</button>
         </td>

@@ -27,9 +27,13 @@ class MedicamentoSerializer(serializers.ModelSerializer):
 
 class HorarioSerializer(serializers.ModelSerializer):
     medicamento_nombre = serializers.CharField(source='id_medicamento.nombre', read_only=True)
+    frecuencia = serializers.IntegerField(min_value=0)
+    # `proxima_toma` es una propiedad del modelo; exponerla como campo solo lectura
+    proxima_toma = serializers.ReadOnlyField()
+
     class Meta:
         model = Horario
-        fields = '__all__'
+        fields = ['id', 'hora_toma', 'frecuencia', 'id_medicamento', 'medicamento_nombre', 'proxima_toma']
 
 
 class RegistroTomaSerializer(serializers.ModelSerializer):

@@ -83,7 +83,9 @@ def proximos_horarios(request):
         {
             'medicamento': h.id_medicamento.nombre,
             'hora_toma': h.hora_toma.strftime('%H:%M'),
-            'frecuencia': h.frecuencia
+            'frecuencia': h.frecuencia,
+            # incluir la próxima toma como ISO 8601 (timezone-aware)
+            'proxima_toma': timezone.localtime(h.proxima_toma).isoformat() if getattr(h, 'proxima_toma', None) else None
         }
         for h in horarios
     ]

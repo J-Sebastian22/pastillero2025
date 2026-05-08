@@ -14,10 +14,14 @@ import { Auth } from '../../services/auth';
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
-proximosHorarios: any[] = [];
+  proximosHorarios: any[] = [];
   usuario: any;
 
   sidebarAbierto = false;
+  // Summary widgets (static defaults, can be wired to real data)
+  numMedicamentosActivos: number = 2;
+  alertasHoy: number = 4;
+  estadoPastillero: string = 'Conectado';
 
   constructor(
     private dashboardService: Dashboards,
@@ -35,8 +39,13 @@ proximosHorarios: any[] = [];
   cargarProximosHorarios() {
     this.dashboardService.getProximosHorarios(this.usuario.id).subscribe({
       next: (data: any) => {
-        this.proximosHorarios = data;
-        console.log('Horarios:', data);
+        // Ordenar por `proxima_toma` de la más próxima a la más lejana
+        this.proximosHorarios = (data || []).slice().sort((a: any, b: any) => {
+          const at = a && a.proxima_toma ? new Date(a.proxima_toma).getTime() : Number.POSITIVE_INFINITY;
+          const bt = b && b.proxima_toma ? new Date(b.proxima_toma).getTime() : Number.POSITIVE_INFINITY;
+          return at - bt;
+        });
+        console.log('Horarios ordenados:', this.proximosHorarios);
       },
       error: (err: any) => console.error('Error:', err)
     });

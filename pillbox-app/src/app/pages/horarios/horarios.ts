@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Horario } from '../../services/horario';
 import { Medicamento } from '../../services/medicamento';
 import { Auth } from '../../services/auth';
+import { HorarioModel } from '../../models/horario';
 
 @Component({
   selector: 'app-horarios',
@@ -13,9 +14,9 @@ import { Auth } from '../../services/auth';
   styleUrl: './horarios.css'
 })
 export class Horarios {
-horarios: any[] = [];
+  horarios: HorarioModel[] = [];
   medicamentos: any[] = [];
-  nuevoHorario = { id_medicamento: '', hora_toma: '', frecuencia: '' };
+  nuevoHorario: any = { id_medicamento: '', hora_toma: '', frecuencia: null };
   usuario: any;
 
   constructor(
@@ -49,16 +50,23 @@ horarios: any[] = [];
   agregarHorario() {
     if (!this.nuevoHorario.id_medicamento || !this.nuevoHorario.hora_toma) return;
 
-    this.horarioService.create(this.nuevoHorario).subscribe({
+    const payload = {
+      id_medicamento: Number(this.nuevoHorario.id_medicamento),
+      hora_toma: this.nuevoHorario.hora_toma,
+      frecuencia: Number(this.nuevoHorario.frecuencia)
+    };
+
+    this.horarioService.create(payload).subscribe({
       next: () => {
         this.cargarHorarios();
-        this.nuevoHorario = { id_medicamento: '', hora_toma: '', frecuencia: '' };
+        this.nuevoHorario = { id_medicamento: '', hora_toma: '', frecuencia: null };
       },
       error: (err: any) => console.error(err)
     });
   }
 
-  eliminarHorario(id: number) {
+  eliminarHorario(id: number | undefined) {
+    if (id == null) return;
     this.horarioService.delete(id).subscribe({
       next: () => this.cargarHorarios(),
       error: (err: any) => console.error(err)

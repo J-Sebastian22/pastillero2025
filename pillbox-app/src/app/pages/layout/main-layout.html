@@ -1,31 +1,34 @@
-<button class="btn-menu" (click)="toggleSidebar()">☰</button>
+<button class="btn-menu" (click)="toggleSidebar()">
+  <span class="material-icons">menu</span>
+</button>
 <div class="sidebar" [class.abierto]="sidebarAbierto">
-  <div class="logo">
-    <span class="emoji">💊</span>
-  </div>
-
   <nav>
     <ul class="menu-options">
-      <li routerLink="/dashboard" routerLinkActive="selected" (click)="toggleSidebar()">
-        <span class="emoji">🏠</span>
+      <li routerLink="/dashboard" routerLinkActive="selected">
+        <span class="material-icons icon">home</span>
+        <span class="nombre">Dashboard</span>
       </li>
-      <li routerLink="/medicamentos" routerLinkActive="selected" (click)="toggleSidebar()">
-        <span class="emoji">💊</span>
+      <li routerLink="/medicamentos" routerLinkActive="selected">
+        <span class="material-icons icon">medical_services</span>
+        <span class="nombre">Medicamentos</span>
       </li>
-      <li routerLink="/horarios" routerLinkActive="selected" (click)="toggleSidebar()">
-        <span class="emoji">⏰</span>
+      <li routerLink="/horarios" routerLinkActive="selected">
+        <span class="material-icons icon">schedule</span>
+        <span class="nombre">Horarios</span>
       </li>
-      <li routerLink="/dispositivo" routerLinkActive="selected" (click)="toggleSidebar()">
-        <span class="emoji">🔌</span>
+      <li routerLink="/dispositivo" routerLinkActive="selected">
+        <span class="material-icons icon">power</span>
+        <span class="nombre">Dispositivo</span>
       </li>
-      <li routerLink="/login" (click)="toggleSidebar()">
-        <span class="emoji">🚪</span>
+      <li routerLink="/login">
+        <span class="material-icons icon">logout</span>
+        <span class="nombre">Salir</span>
       </li>
     </ul>
   </nav>
 
   <div class="more-options">
-    <span class="emoji">⋯</span>
+    <span class="material-icons icon">more_horiz</span>
   </div>
 </div>
 <div class="contenido" [class.con-sidebar]="sidebarAbierto">

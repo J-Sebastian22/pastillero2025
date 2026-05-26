@@ -14,8 +14,17 @@ router.register(r'notificaciones', NotificacionViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('api/', include(router.urls)),
+
     path('api/registro/', registrar_usuario),
+
     path('api/login/', login_usuario),
-     path('api/proximos-horarios/', proximos_horarios),
+
+    path('api/proximos-horarios/', proximos_horarios),
+
+    # NUEVA RUTA ESP32
+    path('api/esp32/alarma/', alarma_esp32),
+
+    path('api/esp32/confirmar/', confirmar_toma),
 ]

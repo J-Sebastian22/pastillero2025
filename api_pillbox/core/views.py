@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import timedelta
+from datetime import datetime
 from django.utils import timezone
 
 from rest_framework import viewsets
@@ -90,3 +91,104 @@ def proximos_horarios(request):
         for h in horarios
     ]
     return Response(data)
+
+
+
+@api_view(['GET'])
+def alarma_esp32(request):
+
+    id_usuario = request.query_params.get('id_usuario')
+
+    if not id_usuario:
+        return Response(
+            {'error': 'Falta id_usuario'},
+            status=400
+        )
+
+    ahora = timezone.localtime()
+
+    margen_minutos = 1
+
+    horarios = Horario.objects.filter(
+        id_medicamento__id_usuario=id_usuario
+    )
+
+    for horario in horarios:
+
+        hora_programada = horario.hora_toma
+
+        hora_actual = ahora.time()
+
+        diferencia = abs(
+            datetime.combine(datetime.today(), hora_actual) -
+            datetime.combine(datetime.today(), hora_programada)
+        )
+
+        if diferencia <= timedelta(minutes=margen_minutos):
+
+            return Response({
+
+                'alarma': True,
+
+                'medicamento':
+                horario.id_medicamento.nombre,
+
+                'casilla': 1,
+
+                'horario_id': horario.id,
+
+                'hora':
+                horario.hora_toma.strftime('%H:%M')
+            })
+
+    return Response({
+        
+        'alarma': False,
+
+        'medicamento':
+        horario.id_medicamento.nombre,
+
+        'dosis':
+        horario.id_medicamento.dosis,
+
+        'casilla': 1,
+
+        'horario_id': horario.id,
+
+        'hora':
+        horario.hora_toma.strftime('%H:%M')
+
+    })
+
+
+
+@api_view(['POST'])
+def confirmar_toma(request):
+
+    horario_id = request.data.get('horario_id')
+
+    if not horario_id:
+
+        return Response({
+            'error': 'Falta horario_id'
+        }, status=400)
+
+    try:
+
+        horario = Horario.objects.get(id=horario_id)
+
+        Registro_Toma.objects.create(
+            id_horario=horario,
+            fecha_hora=timezone.now(),
+            estado='confirmada'
+        )
+
+        return Response({
+            'mensaje': 'Toma confirmada'
+        })
+
+    except Horario.DoesNotExist:
+
+        return Response({
+            'error': 'Horario no encontrado'
+        }, status=404)

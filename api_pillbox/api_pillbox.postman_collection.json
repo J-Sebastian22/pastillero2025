@@ -1,0 +1,2143 @@
+{
+  "info": {
+    "name": "API Pillbox 2025",
+    "_postman_id": "a4d2b1c2-9b2a-4f8c-9b2a-1c3d4e5f6a7b",
+    "description": "Colección de endpoints del backend Pastillero 2025 (Django + DRF + PostgreSQL). Incluye autenticación, CRUDs de usuarios, contactos, dispositivos, medicamentos, horarios, registros de toma, notificaciones y el endpoint de próximos horarios. Cada request incluye ejemplos reales de respuestas exitosas y de error.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "id_usuario",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "id_contacto",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "id_dispositivo",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "id_medicamento",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "id_horario",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "id_registro",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "id_notificacion",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/registro/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "registro", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Cristian Benavides\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\",\n  \"telefono\": \"3001234567\"\n}"
+            },
+            "description": "Crea un nuevo usuario. Equivalente a POST /api/usuarios/."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/registro/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registro", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Cristian Benavides\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\",\n  \"telefono\": \"3001234567\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Cristian Benavides\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\",\n  \"telefono\": \"3001234567\",\n  \"activo\": true,\n  \"fecha_creacion\": \"2026-05-26T10:15:30.123456-05:00\"\n}"
+            },
+            {
+              "name": "400 Correo duplicado",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/registro/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registro", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Cristian Benavides\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\",\n  \"telefono\": \"3001234567\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"correo\": [\"usuario con este correo ya existe.\"]\n}"
+            },
+            {
+              "name": "400 Campos faltantes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/registro/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registro", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"correo\": \"falta@nombre.com\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"nombre\": [\"Este campo es requerido.\"],\n  \"password\": [\"Este campo es requerido.\"],\n  \"telefono\": [\"Este campo es requerido.\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\"\n}"
+            },
+            "description": "Autentica un usuario por correo y contraseña."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/login/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "login", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Cristian Benavides\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\",\n  \"telefono\": \"3001234567\",\n  \"activo\": true,\n  \"fecha_creacion\": \"2026-05-26T10:15:30.123456-05:00\"\n}"
+            },
+            {
+              "name": "401 Credenciales inválidas",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/login/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "login", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"incorrecta\"\n}"
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"error\": \"Credenciales inválidas\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"nombre\": \"Cristian Benavides\",\n    \"correo\": \"cristian@example.com\",\n    \"password\": \"MiClave123\",\n    \"telefono\": \"3001234567\",\n    \"activo\": true,\n    \"fecha_creacion\": \"2026-05-26T10:15:30.123456-05:00\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana Pérez\",\n  \"correo\": \"ana@example.com\",\n  \"password\": \"Ana12345\",\n  \"telefono\": \"3019876543\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Ana Pérez\",\n  \"correo\": \"ana@example.com\",\n  \"password\": \"Ana12345\",\n  \"telefono\": \"3019876543\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 2,\n  \"nombre\": \"Ana Pérez\",\n  \"correo\": \"ana@example.com\",\n  \"password\": \"Ana12345\",\n  \"telefono\": \"3019876543\",\n  \"activo\": true,\n  \"fecha_creacion\": \"2026-05-26T10:20:00.000000-05:00\"\n}"
+            },
+            {
+              "name": "400 Email inválido",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Ana Pérez\",\n  \"correo\": \"no-es-correo\",\n  \"password\": \"Ana12345\",\n  \"telefono\": \"3019876543\"\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"correo\": [\"Introduzca una dirección de correo electrónico válida.\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/{{id_usuario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "{{id_usuario}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", "1", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Cristian Benavides\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"MiClave123\",\n  \"telefono\": \"3001234567\",\n  \"activo\": true,\n  \"fecha_creacion\": \"2026-05-26T10:15:30.123456-05:00\"\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/9999/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", "9999", ""]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"detail\": \"No encontrado.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar usuario (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/{{id_usuario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "{{id_usuario}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Cristian B.\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"NuevaClave\",\n  \"telefono\": \"3001234567\",\n  \"activo\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Cristian B.\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"NuevaClave\",\n  \"telefono\": \"3001234567\",\n  \"activo\": true\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Cristian B.\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"NuevaClave\",\n  \"telefono\": \"3001234567\",\n  \"activo\": true,\n  \"fecha_creacion\": \"2026-05-26T10:15:30.123456-05:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar usuario (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/{{id_usuario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "{{id_usuario}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activo\": false\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"activo\": false\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Cristian B.\",\n  \"correo\": \"cristian@example.com\",\n  \"password\": \"NuevaClave\",\n  \"telefono\": \"3001234567\",\n  \"activo\": false,\n  \"fecha_creacion\": \"2026-05-26T10:15:30.123456-05:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/{{id_usuario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "{{id_usuario}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", "1", ""]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            },
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/9999/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", "9999", ""]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"detail\": \"No encontrado.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Contactos",
+      "item": [
+        {
+          "name": "Listar contactos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/contactos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contactos", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/contactos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "contactos", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"nombre\": \"Madre - María\",\n    \"correo\": \"maria@example.com\",\n    \"telefono\": \"3024445566\",\n    \"id_usuario\": 1\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Crear contacto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/contactos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contactos", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Madre - María\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/contactos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "contactos", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Madre - María\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Madre - María\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 1\n}"
+            },
+            {
+              "name": "400 Usuario inexistente",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/contactos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "contactos", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Madre - María\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 9999\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id_usuario\": [\"Pk inválido \\\"9999\\\" - objeto no existe.\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener contacto por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/contactos/{{id_contacto}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contactos", "{{id_contacto}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/contactos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "contactos", "1", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Madre - María\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar contacto (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/contactos/{{id_contacto}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contactos", "{{id_contacto}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Madre - María L.\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/contactos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "contactos", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Madre - María L.\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Madre - María L.\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3024445566\",\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar contacto (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/contactos/{{id_contacto}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contactos", "{{id_contacto}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"3027778899\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/contactos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "contactos", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"telefono\": \"3027778899\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Madre - María L.\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"3027778899\",\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar contacto",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/contactos/{{id_contacto}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contactos", "{{id_contacto}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/contactos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "contactos", "1", ""]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dispositivos",
+      "item": [
+        {
+          "name": "Listar dispositivos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/dispositivos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dispositivos", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/dispositivos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "dispositivos", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"nombre\": \"Pastillero sala\",\n    \"ip_esp32\": \"192.168.1.50\",\n    \"estado_conexion\": true,\n    \"id_usuario\": 1\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Crear dispositivo",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/dispositivos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dispositivos", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.50\",\n  \"estado_conexion\": false,\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/dispositivos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "dispositivos", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.50\",\n  \"estado_conexion\": false,\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.50\",\n  \"estado_conexion\": false,\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener dispositivo por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/dispositivos/{{id_dispositivo}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dispositivos", "{{id_dispositivo}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/dispositivos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "dispositivos", "1", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.50\",\n  \"estado_conexion\": true,\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar dispositivo (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/dispositivos/{{id_dispositivo}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dispositivos", "{{id_dispositivo}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.51\",\n  \"estado_conexion\": true,\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/dispositivos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "dispositivos", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.51\",\n  \"estado_conexion\": true,\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.51\",\n  \"estado_conexion\": true,\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar dispositivo (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/dispositivos/{{id_dispositivo}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dispositivos", "{{id_dispositivo}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado_conexion\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/dispositivos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "dispositivos", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estado_conexion\": true\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Pastillero sala\",\n  \"ip_esp32\": \"192.168.1.51\",\n  \"estado_conexion\": true,\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar dispositivo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/dispositivos/{{id_dispositivo}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dispositivos", "{{id_dispositivo}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/dispositivos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "dispositivos", "1", ""]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Medicamentos",
+      "item": [
+        {
+          "name": "Listar medicamentos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/medicamentos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "medicamentos", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/medicamentos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "medicamentos", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"nombre\": \"Losartán\",\n    \"descripcion\": \"Antihipertensivo\",\n    \"dosis\": \"50 mg\",\n    \"id_usuario\": 1\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Crear medicamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/medicamentos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "medicamentos", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Antihipertensivo\",\n  \"dosis\": \"50 mg\",\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/medicamentos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "medicamentos", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Antihipertensivo\",\n  \"dosis\": \"50 mg\",\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Antihipertensivo\",\n  \"dosis\": \"50 mg\",\n  \"id_usuario\": 1\n}"
+            },
+            {
+              "name": "400 Falta dosis",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/medicamentos/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "medicamentos", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Losartán\",\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"dosis\": [\"Este campo es requerido.\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener medicamento por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/medicamentos/{{id_medicamento}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "medicamentos", "{{id_medicamento}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/medicamentos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "medicamentos", "1", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Antihipertensivo\",\n  \"dosis\": \"50 mg\",\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar medicamento (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/medicamentos/{{id_medicamento}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "medicamentos", "{{id_medicamento}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Tomar con alimentos\",\n  \"dosis\": \"100 mg\",\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/medicamentos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "medicamentos", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Tomar con alimentos\",\n  \"dosis\": \"100 mg\",\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Tomar con alimentos\",\n  \"dosis\": \"100 mg\",\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar medicamento (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/medicamentos/{{id_medicamento}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "medicamentos", "{{id_medicamento}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dosis\": \"100 mg\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/medicamentos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "medicamentos", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dosis\": \"100 mg\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nombre\": \"Losartán\",\n  \"descripcion\": \"Tomar con alimentos\",\n  \"dosis\": \"100 mg\",\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar medicamento",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/medicamentos/{{id_medicamento}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "medicamentos", "{{id_medicamento}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/medicamentos/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "medicamentos", "1", ""]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Horarios",
+      "item": [
+        {
+          "name": "Listar horarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/horarios/?id_usuario={{id_usuario}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "horarios", ""],
+              "query": [
+                { "key": "id_usuario", "value": "{{id_usuario}}" }
+              ]
+            },
+            "description": "Lista todos los horarios. Filtra por usuario si se envía el query param `id_usuario`."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/horarios/?id_usuario=1",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "horarios", ""],
+                  "query": [
+                    { "key": "id_usuario", "value": "1" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"hora_toma\": \"08:00:00\",\n    \"frecuencia\": 8,\n    \"id_medicamento\": 1,\n    \"medicamento_nombre\": \"Losartán\",\n    \"proxima_toma\": \"2026-05-26T16:00:00-05:00\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Crear horario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/horarios/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "horarios", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hora_toma\": \"08:00:00\",\n  \"frecuencia\": 8,\n  \"id_medicamento\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/horarios/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "horarios", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"hora_toma\": \"08:00:00\",\n  \"frecuencia\": 8,\n  \"id_medicamento\": 1\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"hora_toma\": \"08:00:00\",\n  \"frecuencia\": 8,\n  \"id_medicamento\": 1,\n  \"medicamento_nombre\": \"Losartán\",\n  \"proxima_toma\": \"2026-05-26T16:00:00-05:00\"\n}"
+            },
+            {
+              "name": "400 Frecuencia negativa",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/horarios/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "horarios", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"hora_toma\": \"08:00:00\",\n  \"frecuencia\": -1,\n  \"id_medicamento\": 1\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"frecuencia\": [\"Asegúrese de que este valor sea mayor o igual a 0.\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener horario por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/horarios/{{id_horario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "horarios", "{{id_horario}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/horarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "horarios", "1", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"hora_toma\": \"08:00:00\",\n  \"frecuencia\": 8,\n  \"id_medicamento\": 1,\n  \"medicamento_nombre\": \"Losartán\",\n  \"proxima_toma\": \"2026-05-26T16:00:00-05:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar horario (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/horarios/{{id_horario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "horarios", "{{id_horario}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hora_toma\": \"09:00:00\",\n  \"frecuencia\": 12,\n  \"id_medicamento\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/horarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "horarios", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"hora_toma\": \"09:00:00\",\n  \"frecuencia\": 12,\n  \"id_medicamento\": 1\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"hora_toma\": \"09:00:00\",\n  \"frecuencia\": 12,\n  \"id_medicamento\": 1,\n  \"medicamento_nombre\": \"Losartán\",\n  \"proxima_toma\": \"2026-05-26T21:00:00-05:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar horario (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/horarios/{{id_horario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "horarios", "{{id_horario}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frecuencia\": 6\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/horarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "horarios", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"frecuencia\": 6\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"hora_toma\": \"09:00:00\",\n  \"frecuencia\": 6,\n  \"id_medicamento\": 1,\n  \"medicamento_nombre\": \"Losartán\",\n  \"proxima_toma\": \"2026-05-26T15:00:00-05:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar horario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/horarios/{{id_horario}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "horarios", "{{id_horario}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/horarios/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "horarios", "1", ""]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Registros de toma",
+      "item": [
+        {
+          "name": "Listar registros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/registros/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "registros", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/registros/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registros", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n    \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\",\n    \"id_horario\": 1,\n    \"id_usuario\": 1\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Crear registro",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/registros/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "registros", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": null,\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/registros/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registros", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": null,\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": null,\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+            },
+            {
+              "name": "400 Datetime inválido",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/registros/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registros", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fecha_hora_programada\": \"no-es-fecha\",\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"fecha_hora_programada\": [\"Formato de fecha y hora inválido. Use uno de estos formatos: YYYY-MM-DDTHH:MM[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z].\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener registro por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/registros/{{id_registro}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "registros", "{{id_registro}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/registros/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registros", "1", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\",\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar registro (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/registros/{{id_registro}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "registros", "{{id_registro}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\",\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/registros/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registros", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\",\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\",\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Confirmar toma (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/registros/{{id_registro}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "registros", "{{id_registro}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\"\n}"
+            },
+            "description": "Caso de uso típico: el ESP32 confirma que la toma se ejecutó y se rellena `fecha_hora_real`."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/registros/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registros", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"fecha_hora_programada\": \"2026-05-26T08:00:00-05:00\",\n  \"fecha_hora_real\": \"2026-05-26T08:05:12-05:00\",\n  \"id_horario\": 1,\n  \"id_usuario\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar registro",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/registros/{{id_registro}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "registros", "{{id_registro}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/registros/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "registros", "1", ""]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Notificaciones",
+      "item": [
+        {
+          "name": "Listar notificaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notificaciones/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notificaciones", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/notificaciones/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "notificaciones", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"mensaje\": \"Cristian no tomó su Losartán de las 8:00\",\n    \"fecha_envio\": \"2026-05-26T08:30:00-05:00\",\n    \"id_registro\": 1,\n    \"id_contacto\": 1\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Crear notificación",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/notificaciones/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notificaciones", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mensaje\": \"Cristian no tomó su Losartán de las 8:00\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/notificaciones/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "notificaciones", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mensaje\": \"Cristian no tomó su Losartán de las 8:00\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"mensaje\": \"Cristian no tomó su Losartán de las 8:00\",\n  \"fecha_envio\": \"2026-05-26T08:30:00-05:00\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+            },
+            {
+              "name": "400 Mensaje vacío",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/notificaciones/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "notificaciones", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mensaje\": \"\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"mensaje\": [\"Este campo no puede estar en blanco.\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener notificación por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notificaciones/{{id_notificacion}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notificaciones", "{{id_notificacion}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/notificaciones/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "notificaciones", "1", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"mensaje\": \"Cristian no tomó su Losartán de las 8:00\",\n  \"fecha_envio\": \"2026-05-26T08:30:00-05:00\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar notificación (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/notificaciones/{{id_notificacion}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notificaciones", "{{id_notificacion}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mensaje\": \"Toma omitida confirmada\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/notificaciones/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "notificaciones", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mensaje\": \"Toma omitida confirmada\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"mensaje\": \"Toma omitida confirmada\",\n  \"fecha_envio\": \"2026-05-26T08:30:00-05:00\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar notificación (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/notificaciones/{{id_notificacion}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notificaciones", "{{id_notificacion}}", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mensaje\": \"Mensaje actualizado\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/notificaciones/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "notificaciones", "1", ""]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mensaje\": \"Mensaje actualizado\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"mensaje\": \"Mensaje actualizado\",\n  \"fecha_envio\": \"2026-05-26T08:30:00-05:00\",\n  \"id_registro\": 1,\n  \"id_contacto\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar notificación",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notificaciones/{{id_notificacion}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notificaciones", "{{id_notificacion}}", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/notificaciones/1/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "notificaciones", "1", ""]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Próximos horarios",
+      "item": [
+        {
+          "name": "Próximos 5 horarios del usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/proximos-horarios/?id_usuario={{id_usuario}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "proximos-horarios", ""],
+              "query": [
+                { "key": "id_usuario", "value": "{{id_usuario}}" }
+              ]
+            },
+            "description": "Devuelve los 5 próximos horarios ordenados por hora_toma, incluyendo el cálculo de la próxima toma."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/proximos-horarios/?id_usuario=1",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "proximos-horarios", ""],
+                  "query": [
+                    { "key": "id_usuario", "value": "1" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"medicamento\": \"Losartán\",\n    \"hora_toma\": \"08:00\",\n    \"frecuencia\": 8,\n    \"proxima_toma\": \"2026-05-26T16:00:00-05:00\"\n  },\n  {\n    \"medicamento\": \"Acetaminofén\",\n    \"hora_toma\": \"14:00\",\n    \"frecuencia\": 6,\n    \"proxima_toma\": \"2026-05-26T14:00:00-05:00\"\n  }\n]"
+            },
+            {
+              "name": "400 Falta id_usuario",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/proximos-horarios/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "proximos-horarios", ""]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"error\": \"Falta id_usuario\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
